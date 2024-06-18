@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="sytle.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .container-fluid {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+        }
+        #sidebar {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            color: #fff;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+        #sidebar .nav-link {
+            color: #ffffff;
+            padding: 10px 20px;
+            display: block;
+        }
+        #sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 250px;
+            overflow-y: auto;
+        }
+        .navbar-brand img {
+            width: 100px;
+            height: 120px;
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="container-fluid">
+        <nav id="sidebar" class="bg-dark">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Shop Wise Major Delays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Date Wise Delays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Continued Delays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Conveyor Delays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Raw Material Delays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Agency Wise Delays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Delays Entry</a>
+                </li>
+            </ul>
+        </nav>
+        <main class="content">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-center mt-5">
+                    <h2 class="display-5">Welcome to the Dashboard</h2>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

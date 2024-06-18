@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+            <a class="navbar-brand" href="#">
+                <img src="logo.jpeg" alt="Logo" class="d-inline-block align-text-middle">
+                <span class="brand-text">PPM Department</span>
+            </a>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <section id="login" class="d-flex justify-content-center mt-5">
+                    <div class="card col-md-6">
+                        <div class="card-body">
+                            <h3 class="card-title">Login</h3>
+                            <form id="loginForm" onsubmit="return validateLogin()">
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="captcha">Captcha: <span id="captchaText"></span></label>
+                                    <input type="text" class="form-control" id="captcha" name="captcha" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Simple Captcha and Login Validation -->
+    <script>
+        function generateCaptcha() {
+            let captchaText = Math.random().toString(36).substring(2, 8);
+            document.getElementById('captchaText').innerText = captchaText;
+            return captchaText;
+        }
+
+        function validateLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const inputCaptcha = document.getElementById('captcha').value;
+            const generatedCaptcha = document.getElementById('captchaText').innerText;
+
+            if (username !== 'sushma' || password !== '2004') {
+                alert('Invalid username or password.');
+                return false;
+            }
+
+            if (inputCaptcha !== generatedCaptcha) {
+                alert('Invalid captcha, please try again.');
+                generateCaptcha(); // regenerate new captcha
+                return false;
+            }
+
+            // Simulate successful login
+            window.location.href = 'dashboard.html'; // Redirect to new page
+            return false; // Prevent form submission
+        }
+
+        // Generate initial captcha when page loads
+        window.onload = function() {
+            generateCaptcha();
+        };
+    </script>
+</body>
+</html>

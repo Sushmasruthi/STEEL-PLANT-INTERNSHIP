@@ -1,0 +1,75 @@
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #E8ECEF; /* Light grey background */
+}
+
+.navbar-brand img {
+    width: 100px;
+    height: 120px;
+}
+
+.navbar-brand .brand-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1.2rem;
+}
+
+.form-inline .form-control {
+    font-size: 1.25rem;
+}
+
+.form-inline .btn {
+    font-size: 1.25rem;
+}
+
+#sidebar {
+    height: 100vh; /* Full height */
+    overflow-y: auto; /* Scroll bar */
+    background-color: #343a40; /* Dark background */
+}
+
+#sidebar .nav-link {
+    font-size: 1rem;
+    color: #ffffff; /* White text */
+}
+
+#sidebar .nav-link.active, 
+#sidebar .nav-link[aria-expanded="true"] {
+    background-color: #495057; /* Darker background for active link */
+}
+
+#sidebar .nav-link:hover {
+    background-color: #495057; /* Darker background on hover */
+}
+
+#sidebar .nav .nav {
+    margin-left: 1rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+.display-5 {
+    font-size: 2.5rem;
+}
+
+.card {
+    margin-top: 20px;
+}
+
+.card-title {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+#captchaText {
+    font-size: 1.25rem;
+    font-weight: bold;
+}

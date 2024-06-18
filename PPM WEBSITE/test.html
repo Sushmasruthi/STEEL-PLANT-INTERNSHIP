@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Range and Shop Code Form</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Date Range and Shop Code Form</h2>
+        <form id="dateShopForm">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required min="2002-01-01" max="2007-12-31">
+            
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" required min="2002-01-01" max="2007-12-31">
+            
+            <label for="shopCode">Shop Code:</label>
+            <input type="text" id="shopCode" name="shopCode" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
