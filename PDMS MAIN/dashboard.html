@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for the sidebar and content area */
+        #sidebar {
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+        }
+        #sidebar .nav-link {
+            color: #ffffff;
+            padding: 10px 20px;
+            display: block;
+        }
+        #sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+        .content {
+            padding: 20px;
+            height: 100vh; /* Full height */
+            overflow: auto;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse show">
+                <div class="sidebar-sticky pt-4">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="agency_wise_delay.html" target="contentFrame">Agency Wise Delays</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="date_wise_delay.html" target="contentFrame">Date Wise Delays</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="continued_delays.html" target="contentFrame">Continued Delays</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="conveyor_delays.html" target="contentFrame">Conveyor Delays</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="raw_material.html" target="contentFrame">Raw Material Delays</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="shop_wise_delay.html" target="contentFrame">Shop Wise Delays</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="delays_entry.html" target="contentFrame">Delays Entry</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 content">
+                <div id="welcomeMessage">
+                    <h1>Welcome to Dashboard!</h1>
+                </div>
+                <iframe name="contentFrame"></iframe>
+            </main>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+        if (!isLoggedIn) {
+            window.location.href = 'login.html'; // Redirect to login page if not logged in
+        }
+
+        // Function to remove welcome message after iframe loads
+        function removeWelcomeMessage() {
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            if (welcomeMessage) {
+                welcomeMessage.style.display = 'none';
+            }
+        }
+
+        // Set the onload event handler for the iframe
+        window.onload = function() {
+            const iframe = document.querySelector('iframe[name="contentFrame"]');
+            if (iframe) {
+                iframe.onload = removeWelcomeMessage;
+            }
+        };
+    </script>
+</body>
+</html>

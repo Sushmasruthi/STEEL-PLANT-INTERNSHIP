@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raw Material Delays</title>
+    <link rel="stylesheet" href="separate.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Raw Material Delays</h2>
+        <form id="dateShopForm">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required min="2002-01-01" max="2005-12-31">
+            
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" required min="2002-01-01" max="2005-12-31">
+            
+            <label for="shopCode">Master Shop:</label>
+            <select id="shopCode" name="shopCode" required>
+                <option value="" disabled selected>Select Master Shop</option>
+                <option value="01">RMHP</option>
+                <option value="02">LOCP</option>
+                <option value="03">CO</option>
+                <option value="04">RMB</option>
+                <option value="05">BF</option>
+                <option value="06">SMS</option>
+                <option value="07">BAR MILL</option>
+                <option value="08">WRM</option>
+                <option value="09">MMSM</option>
+                <option value="10">BOILER-1</option>
+                <option value="11">ASU-1</option>
+                <option value="12">CH-1</option>
+                <option value="13">PH</option>
+                <option value="14">AP TRANSCO</option>
+                <option value="15">FK</option>
+                <option value="16">SMS2</option>
+                <option value="17">CD2</option>
+                <option value="18">WRM2</option>
+                <option value="19">SBM</option>
+                <option value="20">STM</option>
+            </select>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <div>
+            <canvas id="delaysChart"></canvas>
+        </div>
+    </div>
+   
+    <script>
+        let chart;
+
+        document.getElementById('dateShopForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const shopCode = document.getElementById('shopCode').value;
+
+            if (new Date(startDate) > new Date(endDate)) {
+                alert('Start date cannot be after end date.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('startDate', startDate);
+            formData.append('endDate', endDate);
+            formData.append('shopCode', shopCode);
+
+            fetch('webcalls.php?type=raw_material', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                updateChart(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        function updateChart(data) {
+            const ctx = document.getElementById('delaysChart').getContext('2d');
+            const chartData = processChartData(data);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Total Delay Duration',
+                        data: chartData.delays,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function processChartData(data) {
+            const labels = [];
+            const delays = [];
+
+            data.forEach(item => {
+                if (item.MATERIAL) { // Check if MATERIAL is not empty
+                    labels.push(item.MATERIAL); // Use MATERIAL for labels
+                    delays.push(item.total_delay); // Use total_delay for data
+                }
+            });
+
+            return { labels, delays };
+        }
+    </script>
+</body>
+</html>

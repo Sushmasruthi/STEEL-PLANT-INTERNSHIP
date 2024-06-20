@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conveyor Delays</title>
+    <link rel="stylesheet" href="separate.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Conveyor Delays uday</h2>
+        <form id="dateShopForm">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required min="2002-01-01" max="2005-12-31">
+            
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" required min="2002-01-01" max="2005-12-31">
+            
+            <label for="shopCode">Master Shop 2:</label>
+            <select id="shopCode" name="shopCode" required>
+                <option value="" disabled selected>Select Master Shop</option>
+            </select>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <div>
+            <canvas id="delaysChart"></canvas>
+        </div>
+    </div>
+    <script>
+        let chart;
+
+        // Mapping of master shop codes to detailed shop codes
+        const masterShopMapping = {
+            'RMHP': ['CT-1', 'CT-2', 'OT-5', 'OT-1', 'OT-2', 'OT-3', 'OT-4'],
+                'LOCP': ['LOCP', 'LOCP-2'],
+            'CO': ['BATTERY-5', 'BATTERY-1', 'BATTERY-2', 'BATTERY-3', 'BATTERY-4'],
+            'RMB': ['RMB'],
+            'SP': ['M/C-1', 'M/C-2', 'M/C-3'],
+            'RMPP': ['RMPP'],
+            'BF': ['F/C-3', 'F/C-1', 'F/C-2'],
+            'HMDP CR': ['HMDP CR'],
+            'LRS CR': ['LRS CR'],
+            'PSY CR': ['PSY CR'],
+            'SSY CR': ['SSY CR'],
+            'TLRS CR': ['TLRS CR'],
+            'SMS': ['CONV-A', 'CONV-B', 'CONV-C'],
+            'CCD': ['CCM-1', 'CCM-2', 'CCM-3', 'CCM-4', 'CCM-5', 'CCM-6'],
+            'BAR MILL': ['BAR MILL'],
+            'BILLET MILL': ['BILLET MIL'],
+            'WRM': ['MILL'],
+            'MMSM': ['MILL'],
+            'SMS2': ['CONV-E', 'CONV-D', 'CONV-F'],
+            'CCD2': ['CCM-1', 'CCM-2', 'CCM-3', 'CCM-4'],
+            'WRM2': ['MILL'],
+            'SBM': ['MILL'],
+            'STM': ['MILL']
+        };
+
+        // Populate dropdown with master shops
+        const shopCodeDropdown = document.getElementById('shopCode');
+        for (const masterShop in masterShopMapping) {
+            const option = document.createElement('option');
+            option.value = masterShop;
+            option.text = masterShop;
+            shopCodeDropdown.appendChild(option);
+        }
+
+        document.getElementById('dateShopForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            let shopCode = document.getElementById('shopCode').value;
+
+            if (new Date(startDate) > new Date(endDate)) {
+                alert('Start date cannot be after end date.');
+                return;
+            }
+
+            // Check if shopCode is a master shop and replace it with corresponding shop codes
+            if (masterShopMapping[shopCode]) {
+                shopCode = masterShopMapping[shopCode].join(',');
+            }
+
+            const formData = new FormData();
+            formData.append('startDate', startDate);
+            formData.append('endDate', endDate);
+            formData.append('shopCode', shopCode);
+
+            fetch('webcalls.php?type=conveyor', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                updateChart(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        function updateChart(data) {
+            const ctx = document.getElementById('delaysChart').getContext('2d');
+            const chartData = processChartData(data);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Total Delay Duration',
+                        data: chartData.delays,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function processChartData(data) {
+            const labels = [];
+            const delays = [];
+
+            data.forEach(item => {
+                labels.push(item.EQPT);
+                delays.push(item.total_delay);
+            });
+
+            return { labels, delays };
+        }
+    </script>
+</body>
+</html>
